@@ -11,9 +11,9 @@
 //
 // TODO:Student Information
 //
-const char *studentName = "NAME";
-const char *studentID   = "PID";
-const char *email       = "EMAIL";
+const char *studentName = "Valerie Liu";
+const char *studentID   = "A14895768";
+const char *email       = "rul021@ucsd.edu";
 
 //------------------------------------//
 //        Cache Configuration         //
@@ -56,12 +56,37 @@ uint64_t l2cachePenalties; // L2$ penalties
 //------------------------------------//
 
 //
-//TODO: Add your Cache data structures here
+uint32_t offset_bits;
+uint32_t i_index_bits;
+uint32_t i_tag_bits;
+uint32_t d_index_bits;
+uint32_t d_tag_bits;
+uint32_t l2_index_bits;
+uint32_t l2_tag_bits;
+
+struct block {
+  uint32_t tag;
+  int has_data;
+};
+
+struct block** icache;
+struct block** dcache;
+struct block** l2cache;
 //
 
 //------------------------------------//
 //          Cache Functions           //
 //------------------------------------//
+
+uint32_t intlog2 (uint32_t n) {
+  if (n == 0 ) return 0;
+  uint32_t result = 0;
+  while (n > 1) {
+    n >>= 1;
+    result++;
+  }
+  return result;
+}
 
 // Initialize the Cache Hierarchy
 //
@@ -79,9 +104,44 @@ init_cache()
   l2cacheMisses     = 0;
   l2cachePenalties  = 0;
   
-  //
-  //TODO: Initialize Cache Simulator Data Structures
-  //
+  offset_bits = intlog2(blocksize);
+  i_index_bits = intlog2(icacheSets);
+  i_tag_bits = 32-i_index_bits-offset_bits;
+  d_index_bits = intlog2(dcacheSets);
+  d_tag_bits = 32-d_index_bits-offset_bits;
+  l2_index_bits = intlog2(l2cacheSets);
+  l2_tag_bits = 32-l2_index_bits-offset_bits;
+
+  icache = malloc(icacheSets * sizeof(struct block*));
+  for (int i = 0; i < icacheSets; i++)
+  {
+    icache[i] = malloc(icacheAssoc * sizeof(struct block));
+    for (int j = 0; j < icacheAssoc; j++)
+    {
+      icache[i][j] = (struct block){0, 0};
+    }
+  }
+
+  dcache = malloc(dcacheSets * sizeof(struct block*));
+  for (int i = 0; i < dcacheSets; i++)
+  {
+    dcache[i] = malloc(dcacheAssoc * sizeof(struct block));
+    for (int j = 0; j < dcacheAssoc; j++)
+    {
+      dcache[i][j] = (struct block){0, 0};
+    }
+  }
+
+  l2cache = malloc(l2cacheSets * sizeof(struct block*));
+  for (int i = 0; i < icacheSets; i++)
+  {
+    l2cache[i] = malloc(l2cacheAssoc * sizeof(struct block));
+    for (int j = 0; j < l2cacheAssoc; j++)
+    {
+      l2cache[i][j] = (struct block){0, 0};
+    }
+  }
+  
 }
 
 // Perform a memory access through the icache interface for the address 'addr'
