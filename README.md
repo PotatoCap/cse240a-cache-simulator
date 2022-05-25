@@ -27,15 +27,15 @@ The testing can be done using the traces given to you in the repository. There a
 1. **MIPS R10K** - [Reference Manual](https://ieeexplore.ieee.org/abstract/document/491460?casa_token=xRyemPMXCU4AAAAA:qMm86PcKveY_y6TAegQChllzSccO4b6ILZRKKEeO_ml4HjQfav6hBbHDJeHR0TeXZCUPyjOpFQ):
    * I$: 32KB, 2-way, 2 cycles hit latency
    * D$: 32KB, 4-way, 2 cycles hit latency
-   * L2: 128KB, 8-way, off-chip, 50 cycles hit latency, inclusive
+   * L2: 128KB, 8-way, off-chip, 50 cycles hit latency, inclusive(we are not testing inclusivity)
    * 128B block size
-   * `./cache --icache=128:2:2 --dcache=64:4:2 --l2cache=128:8:50 --blocksize=128 --memspeed=100 --inclusive`
-2. **Alpha A21264** - [Reference Manual](http://www.ece.cmu.edu/~ece447/s13/lib/exe/fetch.php?media=21264hrm.pdf):
+   * `./cache --icache=128:2:2 --dcache=64:4:2 --l2cache=128:8:50 --blocksize=128 --memspeed=100`
+2. **Alpha A21264** - [Reference Manual](https://course.ece.cmu.edu/~ece447/s15/lib/exe/fetch.php?media=21264hrm.pdf):
    * I$: 64KB, 2-way, 2 cycles hit latency
    * D$: 64KB, 4-way, 2 cycles hit latency
-   * L2: 8MB, direct-mapped, off-chip, 50 cycles hit latency, inclusive
+   * L2: 8MB, direct-mapped, off-chip, 50 cycles hit latency, inclusive(we are not testing inclusivity)
    * 64B block size
-   * `./cache --icache=512:2:2 --dcache=256:4:2 --l2cache=16384:8:50 --blocksize=64 --memspeed=100 --inclusive`
+   * `./cache --icache=512:2:2 --dcache=256:4:2 --l2cache=16384:8:50 --blocksize=64 --memspeed=100`
 
 
 You need to make sure that your output matches this configuration output with 2% of error margin. There will be some more hidden test cases which will test the simulator against some other configurations. 
@@ -70,12 +70,12 @@ Sample Trace from tsman.bz2:
 This assignment is to be done individually by every student. Please make sure you do not copy a single line of code from any source. Not from other students, not from the web, not from anywhere. We have very sophisticated tools to discover if you did. This is a graduate class and we have the very highest expectations for integrity. You should expect that if you do so, even in very small amounts, you will be caught, you will be asked to leave the program, and if an international student, required to leave the country. 
 
 ## Turning it in
-We will be taking only your predictor.c and predictor.h files. You can cadd the entire repository, but you need to have a folder structure like the following at least:
+We will be taking only your predictor.c and predictor.h files. You can add the entire repository, but you need to have a folder structure like the following at least:
 
 ```
 ├── 📂 src
-|   ├── 📄 predictor.c
-|   ├── 📄 predictor.h
+|   ├── 📄 cache.c
+|   ├── 📄 cache.h
 ```
 
 You can, of course, submit the entire repository, but we will look for only these files, and all the remaining files used will be our own. We will run the following commands for grading: `make clean` followed by `make`
