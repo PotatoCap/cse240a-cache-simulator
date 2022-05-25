@@ -245,7 +245,9 @@ icache_access(uint32_t addr)
     return icacheHitTime;
   } else {
     icacheMisses++;
-    return l2cache_access(addr);
+    uint32_t penalty = l2cache_access(addr);
+    icachePenalties += penalty;
+    return icacheHitTime+penalty;
   }
 }
 
@@ -261,7 +263,9 @@ dcache_access(uint32_t addr)
     return dcacheHitTime;
   } else {
     dcacheMisses++;
-    return l2cache_access(addr);
+    uint32_t penalty = l2cache_access(addr);
+    dcachePenalties += penalty;
+    return dcacheHitTime + penalty;
   }
 }
 
@@ -277,6 +281,7 @@ l2cache_access(uint32_t addr)
     return l2cacheHitTime;
   } else {
     l2cacheMisses++;
-    return memspeed;
+    l2cachePenalties += memspeed;
+    return l2cacheHitTime + memspeed;
   }
 }
