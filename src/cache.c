@@ -92,7 +92,7 @@ uint32_t intlog2 (uint32_t n) {
 uint32_t getIndex(uint32_t addr, uint32_t index_bits){
   uint32_t higher_bits = addr >> offset_bits;
   uint32_t index_mask = (1 << index_bits) - 1;
-  return higher_bits && index_mask;
+  return higher_bits & index_mask;
 }
 
 uint32_t getTag(uint32_t addr, uint32_t index_bits){
