@@ -184,7 +184,7 @@ init_cache()
   }
 
   l2cache = malloc(l2cacheSets * sizeof(struct block*));
-  for (int i = 0; i < icacheSets; i++)
+  for (int i = 0; i < l2cacheSets; i++)
   {
     l2cache[i] = malloc(l2cacheAssoc * sizeof(struct block));
     for (int j = 0; j < l2cacheAssoc; j++)
