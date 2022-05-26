@@ -114,11 +114,11 @@ int readData(struct block* line, uint32_t assoc, uint32_t tag){
 void updateLRU(struct block* line, uint32_t assoc, uint32_t tag){
   for (int i = 0; i < assoc; i++)
   {
-    struct block data = line[i];
-    if (data.tag == tag) {
-      data.lru = 0;
+    struct block* data = &line[i];
+    if (data->tag == tag) {
+      data->lru = 0;
     }else{
-      data.lru++;
+      data->lru++;
     }
   }
 }
