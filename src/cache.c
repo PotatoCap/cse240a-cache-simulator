@@ -239,6 +239,12 @@ cache_access(enum cacheType type, uint32_t addr){
 uint32_t
 icache_access(uint32_t addr)
 {
+  if (icacheSets == 0) {
+    uint32_t penalty = l2cache_access(addr);
+    icachePenalties += penalty;
+    return penalty;
+  }
+
   icacheRefs++;
   int hit = cache_access(ic, addr);
   if (hit) {
@@ -257,6 +263,12 @@ icache_access(uint32_t addr)
 uint32_t
 dcache_access(uint32_t addr)
 {
+  if (dcacheSets == 0) {
+    uint32_t penalty = l2cache_access(addr);
+    dcachePenalties += penalty;
+    return penalty;
+  }
+
   dcacheRefs++;
   int hit = cache_access(dc, addr);
   if (hit) {
@@ -275,6 +287,11 @@ dcache_access(uint32_t addr)
 uint32_t
 l2cache_access(uint32_t addr)
 {
+  if (l2cacheSets == 0) {
+    l2cachePenalties += memspeed;
+    return memspeed;
+  }
+
   l2cacheRefs++;
   int hit = cache_access(l2, addr);
   if (hit) {
